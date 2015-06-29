@@ -1,0 +1,143 @@
+<!doctype html>
+<html class="no-js">
+<{include file="library/head.html"}>
+
+<link href="http://www.bootstrap-switch.org/dist/css/bootstrap3/bootstrap-switch.css" rel="stylesheet">
+
+<body>
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+  以获得更好的体验！</p>
+<![endif]-->
+
+<{include file="library/header.html"}>
+
+<div class="am-cf admin-main">
+  <!-- sidebar start -->
+  <{include file="library/sidebar.html"}>
+  <!-- sidebar end -->
+
+<!-- content start -->
+<div class="admin-content">
+
+  <div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">文章</strong> / <small>写文章</small></div>
+  </div>
+  <hr/>
+    <div class="am-g">
+      <div class="am-u-sm-12 ">
+			<form class="am-form am-form-horizontal" method="post" data-am-validator>
+				<div class="am-g am-margin-top">
+					<div class="am-u-sm-12">
+						<select data-am-selected="{btnSize: 'sm'}" name="Article[cid]">
+						<{foreach $categoryList as $category}>
+							<option value="<{$category.id}>" <{if $category.id==$article.category.id}>selected<{/if}>><{$category.name}></option>
+						<{/foreach}>
+						</select>
+					</div>
+				</div>
+				<div class="am-g am-margin-top">
+					<div class="am-u-sm-12">
+						<input type="text" class="am-input-sm" placeholder="标题" name="Article[title]" value="<{$article.title}>" required>
+					</div>
+				</div>
+				<div class="am-g am-margin-top">
+					<div class="am-u-sm-12">
+						<input type="text" class="am-input-sm" placeholder="别名" name="Article[alias]" value="<{$article.alias}>" required>
+					</div>
+				</div>
+				<div class="am-g am-margin-top">
+					<div class="am-u-sm-12">
+					  <input type="text" class="am-input-sm" placeholder="关键词" name="Article[keywords]" value="<{$article.keywords}>">
+					</div>
+				</div>
+				<div class="am-g am-margin-top">
+					<div class="am-u-sm-12">
+						<textarea rows="10" class="am-input-sm" placeholder="内容摘要" name="Article[description]"><{$article.description}></textarea>
+					</div>
+				</div>
+				<div class="am-g am-margin-top">
+					<div class="am-u-sm-12">
+						<textarea rows="10" class="ckeditor" placeholder="请使用富文本编辑插件"  name="Article[content]"><{$article.content}></textarea>
+					</div>
+				</div>
+				<div class="am-g am-margin-top">
+				  <div class="am-u-sm-12 am-u-md-12">
+					<div class="am-btn-group" data-am-button>
+						<input class="am-btn am-btn-default am-btn-xs" type="checkbox" id="article-status-switch" <{if $article.status==1}>checked<{/if}> data-on-text="发布" data-off-text="待审核">
+					</div>
+				  </div>
+				</div>
+				<div class="am-g am-margin-top">
+					<div class="am-u-sm-12">
+						<input type="hidden" name="<{$csrfToken.name}>" value='<{$csrfToken.value}>'>
+						<input type="hidden" name="Article[status]" value='<{$article.status}>'>
+						<button class="am-btn am-btn-secondary" type="submit">提交</button>
+					</div>
+				</div>
+				<br />
+			</form>
+      </div>
+    </div>
+</div>
+<!-- content end -->
+
+</div>
+
+<a class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+
+<{include file="library/footer.html"}>
+<script src="//cdn.ckeditor.com/4.4.7/full/ckeditor.js"></script>
+<script src="http://www.bootstrap-switch.org/dist/js/bootstrap-switch.js"></script>
+<script>
+	CKEDITOR.replace('Article[content]');
+	$(document).ready(function(){
+		var title = $("input[name='Article[title]']");
+		var alias = $("input[name='Article[alias]']");
+		var status = $("input[name='Article[status]']");
+		var status_switch = $("#article-status-switch");
+		status_switch.bootstrapSwitch();
+		status_switch.on('switchChange.bootstrapSwitch', function(event, state) {
+			if (state)
+				status.val(1);
+			else
+				status.val(0);
+		});
+		title.blur(function(){
+			var title_str = title.val();
+			var reg = /\s/g;
+			var alias_str = $.trim(title_str).replace(/[\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\?]/g,"").replace(/[\ |\/|\\]/g, "-");
+			if (alias.val() == '') {
+				alias.val(alias_str.toLowerCase());
+				alias.change();
+			}
+		});
+		alias.change(function() {
+			if (alias.val() !== '') {
+				var data = {
+					'cmd': 'isAliasExist',
+					'condition': {
+						'alias': alias.val(),
+					},
+				};
+				$.ajax({
+					url: '/admin/article-ajax.html',
+					type: 'post',
+					data: data,
+					dataType:'json',
+					complete: function(XMLHttpRequest, textStatus){
+						console.log(XMLHttpRequest);
+						var response = $.parseJSON(XMLHttpRequest.responseText);
+						if (response.code === 1) {
+							alert('别名已存在！请重新输入！');
+							alias.focus();
+						}
+					},
+				});
+			}
+		});
+	});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head lang="zh-cmn-Hans">
+		<base href="/"/>
+		<meta charset="UTF-8">
+		<title><{$article.title}> | 李锋辉的个人博客 | I Do What I Must</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport"
+			  content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="alternate icon" type="image/png" href="favicon.ico">
+		<link rel="stylesheet" href="/assets/themes/amazeui/css/??amazeui.min.css,app.css"/>
+	</head>
+	<body>
+		<header class="am-g">
+			<a class="am-icon-sm am-icon-reply-all site-article-back-home" href=""></a>
+			<div class="am-u-sm-12 site-article-my-head">
+				<h1 class="am-article-title"><{$article.title}></h1>
+				<p class="am-article-meta">由 <{$article.user.username}> 发布</p>
+			</div>
+		</header>
+		<hr class="am-article-divider"/>
+		<div class="am-g am-g-fixed">
+			<div class="am-u-md-12">
+				<div class="am-g">
+					<div class="am-u-sm-11 am-u-sm-centered">
+						<div class="am-cf am-article"><{$article.content}></div>
+						<hr/>
+						<div data-am-widget="duoshuo" class="am-comments-list am-duoshuo am-duoshuo-default" data-ds-short-name="yii2blog">
+							<div class="ds-thread" data-thread-key="yii2blog-online-article-<{$article.id}>" data-title="<{$article.title}>"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<{include file="library/footer.html"}>
+
+		<!--[if lt IE 9]>
+		<script src="//lib.sinaapp.com/js/jquery/1.10.2/jquery-1.10.2.min.js"></script>
+		<script src="//cdnjscn.b0.upaiyun.com/libs/modernizr/2.8.2/modernizr.min.js"></script>
+		<script src="/assets/themes/amazeui/js/??polyfill/rem.min.js,polyfill/respond.min.js,amazeui.legacy.js,app.js"></script>
+		<![endif]-->
+
+		<!--[if (gte IE 9)|!(IE)]><!-->
+		<script src="/assets/themes/amazeui/js/??jquery.min.js,amazeui.min.js,app.js"></script>
+		<!--<![endif]-->
+	</body>
+</html>

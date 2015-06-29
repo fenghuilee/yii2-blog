@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head lang="zh-cmn-Hans">
+		<base href="/"/>
+		<meta charset="UTF-8">
+		<title><{$category.name}> | 李锋辉的个人博客 | I Do What I Must</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport"
+			  content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="alternate icon" type="image/png" href="favicon.ico">
+		<link rel="stylesheet" href="/assets/themes/amazeui/css/??amazeui.min.css,app.css"/>
+	</head>
+	<body class="site-category-body">
+		<div class="am-g">
+			<div class="am-u-lg-3 am-u-md-12 am-u-sm-12 blog-left-site">
+				<{include file="library/navigation.html"}>
+			</div>
+			<div class="am-u-lg-9 am-u-md-12 am-u-sm-12 blog-right-site">
+				<div class="am-g">
+				  <div class="am-u-sm-11 am-u-sm-centered">
+					<div class="am-cf am-category">
+						<h1>分类：<{$category.name}></h1>
+						<p><{$category.intro}></p>
+					</div>
+					<{foreach $categoryArticleList.articles as $article}>
+					<{assign var=create_date value=$article.create_date|strtotime}>
+					<div class="am-cf am-article">
+						<div class="article-body">
+							<h1><a href="<{href route=['/site/article', 'yyyy' => $create_date|date_format:'Y', 'mm' => $create_date|date_format:'m', 'dd' => $create_date|date_format:'d', 'alias' => $article.alias]}>" target="_blank"><{$article.title}></a></h1>
+							<div><{$article.content|strip_tags|truncate:255:"…":true}></div>
+						</div>
+						<div class="article-footer">
+							<p class="am-icon-calendar">&nbsp;<{$article.create_date}></p>&nbsp;&nbsp;
+							<p class="am-icon-folder">&nbsp;<a href="<{href route=['/site/category', 'alias' => $category.alias]}>" target="_blank"><{$category.name}></a></p>&nbsp;&nbsp;
+							<p class="am-icon-tags">&nbsp;<{$category.name}></p>&nbsp;&nbsp;
+							<p class="am-icon-reply">&nbsp;<a href="<{href route=['/site/article', 'yyyy' => $create_date|date_format:'Y', 'mm' => $create_date|date_format:'m', 'dd' => $create_date|date_format:'d', 'alias' => $article.alias]}>#reply" target="_blank">发表回复</a></p>
+						</div>
+					</div>
+					<{/foreach}>
+				  </div>
+				</div>
+				<hr/>
+				<div class="am-cf">
+					共 <{$categoryArticleList.total}> 条记录
+					<{assign var=totalPage value=ceil($categoryArticleList.total / $size)}>
+					<{assign var=pagiPage value=5}>
+					<{if $totalPage > 1}>
+					<div class="am-fr">
+						<ul class="am-pagination">
+						<{if $page != 1}>
+							<{$getArray.page = $page-1}>
+							<li><a href="<{$getUrl}>?<{$getArray|@http_build_query}>">«</a></li>
+						<{/if}>
+						<{assign var=startPage value=((ceil($page/$pagiPage)-1)*$pagiPage+1)}>
+						<{for $pg=$startPage to $totalPage max=$pagiPage}>
+							<{if $pg == $page}>
+								<li class="am-active"><a><{$pg}></a></li>
+							<{else}>
+								<{$getArray.page = $pg}>
+								<li><a href="<{$getUrl}>?<{$getArray|@http_build_query}>"><{$pg}></a></li>
+							<{/if}>
+						<{/for}>
+						<{if $page != $totalPage}>
+							<{$getArray.page = $page+1}>
+							<li><a href="<{$getUrl}>?<{$getArray|@http_build_query}>">»</a></li>
+						<{/if}>
+						</ul>
+					</div>
+					<{/if}>
+				</div>
+			</div>
+		</div>
+
+		<{include file="library/footer.html"}>
+
+		<!--[if lt IE 9]>
+		<script src="//lib.sinaapp.com/js/jquery/1.10.2/jquery-1.10.2.min.js"></script>
+		<script src="//cdnjscn.b0.upaiyun.com/libs/modernizr/2.8.2/modernizr.min.js"></script>
+		<script src="/assets/themes/amazeui/js/??polyfill/rem.min.js,polyfill/respond.min.js,amazeui.legacy.js,app.js"></script>
+		<![endif]-->
+
+		<!--[if (gte IE 9)|!(IE)]><!-->
+		<script src="/assets/themes/amazeui/js/??jquery.min.js,amazeui.min.js,app.js"></script>
+		<!--<![endif]-->
+	</body>
+</html>

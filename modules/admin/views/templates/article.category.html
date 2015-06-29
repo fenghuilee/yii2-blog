@@ -1,0 +1,177 @@
+<!doctype html>
+<html class="no-js">
+<{include file="library/head.html"}>
+<body>
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+  以获得更好的体验！</p>
+<![endif]-->
+
+<{include file="library/header.html"}>
+
+<div class="am-cf admin-main">
+  <!-- sidebar start -->
+  <{include file="library/sidebar.html"}>
+  <!-- sidebar end -->
+
+  <!-- content start -->
+  <div class="admin-content">
+    <div class="am-cf am-padding">
+      <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">文章</strong> / <small>分类目录</small></div>
+    </div>
+
+    <hr/>
+
+    <div class="am-g">
+
+      <div class="am-u-sm-12 ">
+        <form class="am-form am-form-horizontal" method="post">
+		  <fieldset>
+          <div class="am-form-group am-form-select">
+            <label for="user-name" class="am-u-sm-1 am-form-label">父节点</label>
+			<div class="am-u-sm-11">
+              <select name="Category[pid]">
+                  <option value="0">顶级目录</option>
+			  <{foreach $categoryList as $category}>
+                  <option value="<{$category.id}>"><{$category.name}></option>
+              <{/foreach}>
+              </select>
+			  <small>分类目录和标签不同，它可以有层级关系。您可以有一个“音乐”分类目录，在这个目录下可以有叫做“流行”和“古典”的子目录。</small>
+			</div>
+            <span class="am-form-caret"></span>
+          </div>
+
+          <div class="am-form-group">
+            <label for="user-email" class="am-u-sm-1 am-form-label">名称</label>
+            <div class="am-u-sm-11">
+              <input type="text" name="Category[name]">
+              <small>这将是它在站点上显示的名字。</small>
+            </div>
+          </div>
+
+          <div class="am-form-group">
+            <label for="user-phone" class="am-u-sm-1 am-form-label">别名</label>
+            <div class="am-u-sm-11">
+              <input type="text" name="Category[alias]">
+              <small>“别名”是在URL中使用的别称，它可以令URL更美观。通常使用小写，只能包含字母，数字和连字符（-）。</small>
+            </div>
+          </div>
+
+          <div class="am-form-group">
+            <label for="user-intro" class="am-u-sm-1 am-form-label">简介</label>
+            <div class="am-u-sm-11">
+              <textarea class="" rows="5" name="Category[intro]"></textarea>
+              <small>描述只会在一部分主题中显示。</small>
+            </div>
+          </div>
+
+          <div class="am-form-group">
+            <div class="am-u-sm-11 am-u-sm-push-1">
+              <input type="hidden" name="<{$csrfToken.name}>" value='<{$csrfToken.value}>'>
+              <button type="submit" class="am-btn am-btn-primary">添加新分类目录</button>
+            </div>
+          </div>
+		</fieldset>
+        </form>
+      </div>
+    </div>
+    <div class="am-g">
+      <div class="am-u-sm-12 am-u-md-6">
+        <div class="am-btn-toolbar">
+          <div class="am-btn-group am-btn-group-xs">
+            <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
+            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 保存</button>
+            <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 审核</button>
+            <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button>
+          </div>
+        </div>
+      </div>
+      <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-form-group">
+          <select data-am-selected="{btnSize: 'sm'}">
+			<{foreach $categoryList as $category}>
+                <option value="<{$category.id}>"><{$category.name}></option>
+            <{/foreach}>
+          </select>
+        </div>
+      </div>
+      <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+          <input type="text" class="am-form-field">
+          <span class="am-input-group-btn">
+            <button class="am-btn am-btn-default" type="button">搜索</button>
+          </span>
+        </div>
+      </div>
+      <div class="am-u-sm-12">
+        <!-- <form class="am-form"> -->
+          <table class="am-table am-table-striped am-table-hover table-main">
+            <thead>
+              <tr>
+                <th class="table-check"><input type="checkbox" /></th><th class="table-id">ID</th><th class="table-title">名称</th><th class="table-type">父节点</th><th class="table-author am-hide-sm-only">别名</th><th class="table-date am-hide-sm-only">简介</th><th class="table-set">操作</th>
+              </tr>
+          </thead>
+          <tbody>
+            <{foreach $categoryList as $category}>
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td><{$category.id}></td>
+              <td><a href="#"><{$category.name}></a></td>
+              <td><{$category.parent.name}></td>
+              <td class="am-hide-sm-only"><{$category.alias}></td>
+              <td class="am-hide-sm-only"><{$category.intro}></td>
+              <td>
+                <div class="am-btn-toolbar">
+                  <div class="am-btn-group am-btn-group-xs">
+                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 编辑</button>
+                    <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only opt-delete" data-id="<{$category.id}>"><span class="am-icon-trash-o"></span> 删除</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <{/foreach}>
+          </tbody>
+        </table>
+        <!-- </form> -->
+      </div>
+
+    </div>
+  </div>
+  <!-- content end -->
+
+</div>
+
+<a class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+
+<{include file="library/footer.html"}>
+<script>
+	$(document).ready(function (){
+		$(".opt-delete").click(function(){
+			var id = $(this).data('id');
+			var data = {
+				'id': id,
+			};
+			if(window.confirm('你确定要删除吗？')){
+				$.ajax({
+					type: 'delete',
+					data: data,
+					dataType:'json',
+					complete: function(XMLHttpRequest, textStatus){
+						var response = $.parseJSON(XMLHttpRequest.responseText);
+						if (response.code === 0) {
+							window.location.reload();
+						} else {
+							alert('删除失败！');
+						}
+					},
+				});
+				return true;
+			 }else{
+				return false;
+			}
+		});
+	});
+</script>
+
+</body>
+</html>

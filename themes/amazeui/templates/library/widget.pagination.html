@@ -1,0 +1,25 @@
+		<{$totalPage = $pages}>
+		<{$pagiPage = 10}>
+		<{if $totalPage > 1}>
+		<center class="col-md-12">
+			<ul class="pagination pagination-lg">
+			<{if $page != 1}>
+				<{$getArray.page = $page-1}>
+				<li><a class="previous" href="<{$getUrl}>?<{$getArray|@http_build_query}>">&laquo;</a></li>
+			<{/if}>
+			<{$startPage = ((ceil($page/$pagiPage)-1)*$pagiPage+1)}>
+			<{for $pg=$startPage to $totalPage max=$pagiPage}>
+				<{if $pg == $page}>
+					<li class="active"><a><{$pg}></a></li>
+				<{else}>
+					<{$getArray.page = $pg}>
+					<li><a href="<{$getUrl}>?<{$getArray|@http_build_query}>"><{$pg}></a></li>
+				<{/if}>
+			<{/for}>
+			<{if $page != $totalPage}>
+				<{$getArray.page = $page+1}>
+				<li><a class="next" href="<{$getUrl}>?<{$getArray|@http_build_query}>">&raquo;</a></li>
+			<{/if}>
+			</ul>
+		</center>
+		<{/if}>

@@ -1,0 +1,30 @@
+				<div class="blog-title-subtitle">
+					<img src="assets/common/image/avatar.jpg" alt="李锋辉的个人博客@avatar" class="am-img-thumbnail am-circle">
+					<h1 class="am-kai"><a href="">李锋辉的个人博客</a></h1>
+					<h3 class="am-monospace">I Do What I Must</h3>
+					<span id="blog-menu-btn" class="blog-menu am-icon-btn am-icon-navicon"></span>
+				</div>
+				<div class="blog-aside-ctn">
+					<div class="blog-search">
+						<form class="am-form">
+							<input class="am-form-field" type="text" placeholder="搜索...">
+						</form>
+					</div>
+					<div class="blog-aside-recent-article">
+						<h2>近期文章</h2>
+						<ul class="am-list">
+						<{foreach $recentArticleList as $article}>
+						<{assign var=create_date value=$article.create_date|strtotime}>
+							<li><a class="am-text-truncate" href="<{href route=['/site/article', 'yyyy' => $create_date|date_format:'Y', 'mm' => $create_date|date_format:'m', 'dd' => $create_date|date_format:'d', 'alias' => $article.alias]}>" target="_blank"><{$article.title}></a></li>
+						<{/foreach}>
+						</ul>
+					</div>
+					<div class="blog-aside-category">
+						<h2>分类目录</h2>
+						<ul class="am-list">
+						<{foreach $categoryList as $menucategory}>
+							<li><a href="<{href route=['/site/category', 'alias' => $menucategory.alias]}>"><{$menucategory.name}></a></li>
+						<{/foreach}>
+						</ul>
+					</div>
+				</div>
